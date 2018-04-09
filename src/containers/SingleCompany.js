@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import CompanySummarySub from './CompanySummarySub.js';
 import CompanyListSub from './CompanyListSub.js';
+//links bulma to files
 import  '../styles/singleCompany/singleCompany.scss';
 
 
