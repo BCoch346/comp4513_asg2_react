@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import { Route, Switch  } from 'react-router-dom';
-import './styles/base/app.scss';
-
-
-
 import socketClient from './chatserver/SocketClient.js'
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import HeaderBar from './components/HeaderBar.js';
@@ -17,7 +13,7 @@ import NotFound from './components/NotFound.js';
 import AboutUs from './components/AboutUs.js';
 import Notification from './containers/notification.js';
 import Chat from './chatserver/ChatWindow.js';
-
+import './styles/base/app.scss';
 //-----------------------------------------------------
 // ROOT ELEMENT FOR THE APP, REDIRECTS TO LOGIN IF THE FLAG ISAUTHENTICATED IS FALSE
 //-----------------------------------------------------
