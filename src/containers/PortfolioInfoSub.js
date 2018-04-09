@@ -83,9 +83,9 @@ class PortfolioInfoSub extends Component {
                     {this.state.completePortfolio.map((stock, ind) => {
                         return(
                             <tr key={ind}>
-                                <td>{stock.symbol}</td>
                                 <td><NavLink to={"/company/" + stock.symbol} symbol={stock.symbol} key={ind}>{stock.symbol}</NavLink></td>
                                 <td><NavLink to={"/company/" + stock.symbol} symbol={stock.symbol} key={ind}>{stock.name}</NavLink></td>
+                                <td>{stock.owned}</td>
                                 <td>{stock.close}</td>
 
                             </tr>
