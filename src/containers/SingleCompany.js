@@ -8,7 +8,7 @@ import axios from 'axios';
 import CompanySummarySub from './CompanySummarySub.js';
 import CompanyListSub from './CompanyListSub.js';
 //links bulma to files
-import  '../styles/singleCompany/singleCompany.scss';
+import  '../styles/singleCompany/singlecompany.scss';
 
 
 //----------------------------------

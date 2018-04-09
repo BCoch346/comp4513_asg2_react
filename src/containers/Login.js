@@ -192,11 +192,6 @@ class Login extends Component {
                                 {/* TO DISABLE LOGIN REDIRECT ON LOAD SET THE APP.JS ISAUTHENTICATED STATE TO TRUE */}
                                 <div className="field is-grouped">
                                       <p className="control">
-                                        <a className="button is-link input" onClick={()=>this.bypasslogin()}>
-                                          <span>Login with the ccrigin3@nbcnews.com credentials "debug"</span>
-                                        </a>
-                                      </p>
-                                      <p className="control">
                                         <a className="button is-link input" onClick={()=>this.login()}>
                                           <span>Submit</span>
                                         </a>
