@@ -31,45 +31,52 @@ class BrowseCompanies extends Component {
         if (! this.state.companies || this.state.companies.length === 0){
             return null;
         }else{
-        return(
-            <div>
-                <nav className="breadcrumb" aria-label="breadcrumbs">
-                  <ul>
-                    <li><NavLink to={"/" }>Home</NavLink></li>
-                    <li className="is-active"><span >&nbsp;&nbsp;</span>Companies</li>
-                  </ul>
-                </nav>
-                <div className = "card-table">
-                    <div className = "content">
-                        <div className = "table is-striped is-boardered">
-                            <div className = "box tbody panel">
-                                {this.state.companies?
-                                    this.state.companies.map((company, ind) => {
-                                        return (
-                                            <div className = "is-fullwidth columns panel-block" key={ind}>
-                                                <NavLink to={"/company/" + company.symbol} company={company} key={ind} className = "columns column is-12">
-                                                    <div className = "column is-6 is-centered">
-                                                        <figure className="image image is-128x128">
-                                                            {/* https://stackoverflow.com/questions/44154939/load-local-images-in-react-js */}
-                                                          <img src={process.env.PUBLIC_URL + '/logos/'+ company.symbol+ '.svg'} alt={company.symbol} />
-                                                        </figure>
-                                                    </div>
-                                                    <div className = "column is-6">
-                                                        <h1>{company.name}</h1>
-                                                    </div>
-                                                </NavLink>
+            return(
+                <div>
+                <article className="section">
+                    {/*Breadcrumb*/}
+                    <nav className="breadcrumb" aria-label="breadcrumbs">
+                      <ul>
+                        <li><NavLink to={"/" }>Home</NavLink></li>
+                        <li className="is-active"><span >&nbsp;&nbsp;</span>Companies</li>
+                      </ul>
+                    </nav>
+                    <div className = "columns is-multiline">
+                        {this.state.companies?
+                            this.state.companies.map((company, ind) => {
+                                return (
+                                    <div className = "column is-4" key={ind}>
+                                        <div className = "card">
+                                             <NavLink to={"/company/" + company.symbol} className="" symbol={company.symbol} key={ind}>
+                                            <div className="card-image">
+                                                <div className="box is-centered">
+                                                    {/* https://stackoverflow.com/questions/44154939/load-local-images-in-react-js */}
+                                                    <figure className="image is-3by2">
+                                                        <img src={process.env.PUBLIC_URL + '/logos/'+ company.symbol+ '.svg'} alt={company.symbol} />
+                                                    </figure>
+                                                </div>
                                             </div>
-                                            
-                                        );
-                                        
-                                    }):null
-                                }
-                            </div>
-                        </div>
+                                            </NavLink>
+                                            <div className="card-content">
+                                                <div className = "media">
+                                                    <div className = "media-content">
+                                                    <br/>
+                                                        <NavLink to={"/company/" + company.symbol} className="button is-black is-fullwidth is-rounded is-inverted" symbol={company.symbol} key={ind}>{company.name}
+                                                        </NavLink>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            }):null
+                        }
                     </div>
+                    </article>
                 </div>
-            </div>
-        );}
+                
+            );
+        }
     }
 }
 export default BrowseCompanies;

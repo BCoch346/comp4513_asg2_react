@@ -8,6 +8,7 @@ import axios from 'axios';
 // 7 B .display a drop-down list with the months of the year. When the user selects a month, display a table with the price information (date, low, high, close) for each day of the month that has data.
 //----------------------------------
 class CompanyListSub extends Component{
+    
     constructor(props){
         super(props);
         this.state ={
@@ -41,13 +42,28 @@ class CompanyListSub extends Component{
         drop.classList.toggle("is-active");
     }
     
+    sort=(id)=>{
+        let historicalData = this.state.historicalData;
+        if (document.querySelector("#"+ id).classList.contains(".desc")){
+            historicalData.sort((a, b)=>{let result =0;if (a[id] <b[id])result=1;else if(b[id]<a[id])result=-1;return result;});
+            this.setState({historicalData:historicalData});
+            document.querySelector("#"+ id).classList.remove(".desc");
+            document.querySelector("#"+ id).classList.add(".asc");
+        }else{
+            historicalData.sort((a, b)=>{let result =0;if (a[id] <b[id])result=-1;else if(b[id]<a[id])result=1;return result;});
+            this.setState({historicalData:historicalData});
+            document.querySelector("#"+ id).classList.add(".desc");
+            document.querySelector("#"+ id).classList.remove(".asc");
+        }
+    }
+    
     render(){
         return(
             <div>
                 <div className="section" id="dropdown_container">
                     <div className="dropdown" id="drop1" onClick={()=>this.toggleDropdown("drop1")}>
                         <div className="dropdown-trigger">
-                            <button className="button" aria-haspopup="true" aria-controls="dropdown-menu1">
+                            <button className="button is-primary is-fullwidth is-inverted" aria-haspopup="true" aria-controls="dropdown-menu1">
                                 {/* IF THE MONTH IS SET DISPLAYS THE MONTH OTHERWISE ASKS TO CHOOSE A MONTH  */}
                               <span>{this.state.month?this.state.month:"Choose a month"}</span>
                               <span className="icon is-small">
@@ -71,21 +87,33 @@ class CompanyListSub extends Component{
                 </div>
                 {/* Checks the status of the data, once the data is populated by the api call it displays the table with the monthly historical information*/}
                 {this.state.historicalData?
-                    <table>
+                    <table className = "table is-striped">
+                        <thead>
+                            <tr>
+                                <th onClick={()=>this.sort("date")} id="date"><span><span className="level-left"><span className="fas fa-arrows-alt-v level-right is-vertical-center is-marginless" /> &nbsp;Date</span></span></th>
+                                <th onClick={()=>this.sort("open")} id="open"><span><span className="level-left"><span className="fas fa-arrows-alt-v level-right is-vertical-center is-marginless" /> &nbsp;Open</span></span></th>
+                                <th onClick={()=>this.sort("high")} id="high"><span><span className="level-left"><span className="fas fa-arrows-alt-v level-right is-vertical-center is-marginless" /> &nbsp;High</span></span></th>
+                                <th onClick={()=>this.sort("low")} id="low"><span><span className="level-left"><span className="fas fa-arrows-alt-v level-right is-vertical-center is-marginless" /> &nbsp;Low</span></span></th>
+                                <th onClick={()=>this.sort("close")} id="close"><span><span className="level-left"><span className="fas fa-arrows-alt-v level-right is-vertical-center is-marginless" /> &nbsp;Close</span></span></th>
+                                <th onClick={()=>this.sort("volume")} id="volume"><span><span className="level-left"><span className="fas fa-arrows-alt-v level-right is-vertical-center is-marginless" /> &nbsp;Volume</span></span></th>
+                            </tr>
+                        </thead>
                         <tbody>
-                        <tr><th>Date</th><th>Open</th><th>High</th><th>Low</th><th>Close</th><th>Volume</th></tr>
-                    {/* Map the historical data to output a table row with the data for the specific date */}
-                    {this.state.historicalData.map((month, ind)=>{
-                        return(<tr key={ind}>
-                            <td>{month.date}</td>
-                            <td>{month.open}</td>
-                            <td>{month.high}</td>
-                            <td>{month.low}</td>
-                            <td>{month.close}</td>
-                            <td>{month.volume}</td>
-                        </tr>);
-                    })}
-                    </tbody>
+                        {/* Map the historical data to output a table row with the data for the specific date */}
+                         {this.state.historicalData.map((month, ind)=>{
+                            return(
+                                <tr key={ind}>
+                                    <td >{month.date}</td>
+                                    <td >{month.open}</td>
+                                    <td >{month.high}</td>
+                                    <td >{month.low}</td>
+                                    <td >{month.close}</td>
+                                    <td >{month.volume}</td>
+                                </tr>
+                                );
+                            })
+                        }
+                        </tbody>
                     </table>
                 // RETURNS NULL IF HISTORICALDATA STATE IS NOT SET
                 :null}

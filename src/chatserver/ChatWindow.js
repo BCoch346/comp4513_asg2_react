@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Launcher} from 'react-chat-window'
+import '../styles/chatstyle/chats.scss';
 
 class Chat extends Component {
 
@@ -56,21 +57,21 @@ class Chat extends Component {
         //this.setState({
         //    chatHistory: [...this.state.chatHistory, message]
         //});
-        console.log("on message was sent: " + JSON.stringify(message));
+        // console.log("on message was sent: " + JSON.stringify(message));
         //message.author = this.props.user;
         this.props.client.message(JSON.stringify(message), JSON.stringify(this.props.user));
       }
     
       _sendMessage(messageIn) {
-        console.log("message received from emit: " + messageIn);
+        // console.log("message received from emit: " + messageIn);
         var parsedIn = JSON.parse(messageIn);
         var parsedMessage = JSON.parse(parsedIn.message);
         var parseduser = JSON.parse(parsedIn.user);
-        console.log("senderID: " + parseduser.id);
-        console.log("receiverID: " + this.props.userid);
+        // console.log("senderID: " + parseduser.id);
+        // console.log("receiverID: " + this.props.userid);
         
         parseduser.id === this.props.userid ? parsedIn.author = "me" : parsedIn.author = parseduser.first_name + " " + parseduser.last_name;
-        console.log("Author " + parsedIn.author);
+        // console.log("Author " + parsedIn.author);
         if (parsedIn.message.length > 0) {
             this.setState({
                 chatHistory: [...this.state.chatHistory, {
@@ -80,7 +81,7 @@ class Chat extends Component {
               }]
             })
           }
-          console.log("is chat open: " + this.state.isOpen);
+          // console.log("is chat open: " + this.state.isOpen);
           if(this.state.isOpen){
             this.props.notification('message', parsedIn.author, parsedMessage.data.text); 
             
@@ -88,7 +89,7 @@ class Chat extends Component {
     }
     
     updateChatHistory(message) {
-        console.log('update chat history: ' + message)
+        // console.log('update chat history: ' + message)
         this.setState({
             chatHistory: [...this.state.chatHistory, message]
           })
@@ -96,7 +97,7 @@ class Chat extends Component {
     }
     
     checkwindowopen(status){
-      console.log("updated status: " + status);
+      // console.log("updated status: " + status);
       this.setState({
         isOpen: status 
       })      
