@@ -31,7 +31,7 @@ class PortfolioInfoSub extends Component {
             axios.get("https://obscure-temple-42697.herokuapp.com/api/companies/list").then(response => {
                 response.data.filter((element)=> {
                   for(let el of portfolioWithClose){if (el.symbol === element.symbol){
-                      let toReturn ={owned:el.owned, symbol: element.symbol, name: element.name, close: el.close};
+                    let toReturn ={owned:el.owned, symbol: element.symbol, name: element.name, close: this.formatToDollars(el.close * el.owned)};
                       portfolioWithName.push(toReturn);
                       }}return null;
                 });
@@ -44,6 +44,10 @@ class PortfolioInfoSub extends Component {
         }
     }
     
+    formatToDollars=(value)=>{
+        //https://stackoverflow.com/questions/14467433/currency-formatting-in-javascript
+        return '$' + value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    }
 
     sort=(id)=>{
         let porfolioComplete = this.state.completePortfolio;
@@ -81,7 +85,7 @@ class PortfolioInfoSub extends Component {
                                 <td>{stock.symbol}</td>
                                 <td><NavLink to={"/company/" + stock.symbol} symbol={stock.symbol} key={ind}>{stock.symbol}</NavLink></td>
                                 <td><NavLink to={"/company/" + stock.symbol} symbol={stock.symbol} key={ind}>{stock.name}</NavLink></td>
-                                <td>${stock.close}</td>
+                                <td>{stock.close}</td>
 
                             </tr>
                             );
