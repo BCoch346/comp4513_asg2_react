@@ -13,6 +13,7 @@ import NotFound from './components/NotFound.js';
 import AboutUs from './components/AboutUs.js';
 import Notification from './containers/notification.js';
 import Chat from './chatserver/ChatWindow.js';
+//load bulma stylesheets
 import './styles/base/app.scss';
 //-----------------------------------------------------
 // ROOT ELEMENT FOR THE APP, REDIRECTS TO LOGIN IF THE FLAG ISAUTHENTICATED IS FALSE
