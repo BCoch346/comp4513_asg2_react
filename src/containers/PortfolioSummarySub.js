@@ -1,117 +1,132 @@
+//b.For the Summary sub-view (which should be the default), display the following information: total number of companies in portfolio, the total number of stocks in portfolio, and the current $ worth of the portfolio. Also display a pie chart displaying a percentage summary of the portfolio information for that user (see 2a in Back-End Requirements). */
 
-//TODO: CSS for the image and the name
-//TODO: SORTING
+//TODO total amount of money
+//TODO CSS
 
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Chart } from 'react-google-charts';
 import axios from 'axios';
-import CompanySummarySub from './CompanySummarySub.js';
-import CompanyListSub from './CompanyListSub.js';
-
 
 //----------------------------------
-// For this view, display the logo and the company name. As well, display two tabs that allow the user to view either the Summary sub-view or the List sub-view:
-//     a.For the Summary sub-view, the other information for the company. Also display a bar chart of the average close price for each month. You are free to use any react-friendly JS charting library.
-//     b.For the List sub-view, display a drop-down list with the months of the year. When the user selects a month, display a table with the price information (date, low, high, close) for each day of the month that has data. 
-//----------------------------------
-class SingleCompany extends Component {
+//  display the following information: total number of companies in portfolio, the total number of stocks in portfolio, and the current $ worth of the portfolio. Also display a pie chart displaying a percentage summary of the portfolio information for that user (see 2a in Back-End Requirements). 
+//----------------------------------    
+class PortfolioSummarySub extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            symbol: this.props.match.params.id,
-            defaultTab: true,
-            company:''
+        this.state={
+            owned:'',
+            userid: this.props.userid,
+            pieData: this.props.pieData,
+            portfolio: this.props.portfolio,
+            total: this.props.total,
+            options: {
+                //title: 'Portfolio distribution',
+                animation:{
+                    duration: 1000,
+                    easing: 'inAndOut',
+                    startup: true,
+                },
+                is3D: true,
+                legend: {position: 'top', maxLines: 4},
+            }
         };
     }
-    
-    //----------------------------------
-    // Once the component mounts it calls the api as described below
-    //----------------------------------
     componentDidMount(){
-        // GET THE SUMMARY INFORMATION FOR THE COMPANY FROM THE SYMBOL AND SETS THE STATE
-        axios.get("https://obscure-temple-42697.herokuapp.com/api/companies/" + this.state.symbol).then(response => {
-            let tempData = response.data[0];
-            let company = {
-                symbol: tempData.symbol,
-                name:tempData.name, 
-                sector: tempData.sector, 
-                subindustry: tempData.subindustry, 
-                address: tempData.address, 
-                date_added: tempData.date_added, 
-                CIK: tempData.CIK, 
-                frequency: tempData.frequency
-            };
-            this.setState({company:company});
+        // SETS THE NUMBER OF COMPANIES OWNED STATE FROM THE LENGTH OF THE PIEDATA MINUS THE TITLE ROW WITHIN THE ARRAY
+        this.setState({owned: (this.state.pieData.length-1)});
+        // CALLS FOR EACH OF THE ELEMENTS OF THE PORTFOLIO ARRAY WHICH WAS PASSED IN FROM THE PORTFOLIO PARENT AND GETS THE LATEST CLOSING PRICE THEN CALCULATES THE TOTAL AMOUNT BY MULTIPLYING 
+        let total=0;
+        let portfolioPrices = [];
+        this.state.portfolio.map(el=>
+            axios("https://obscure-temple-42697.herokuapp.com/api/prices/latest/"+el.symbol).then(response => {
+                portfolioPrices.push(response.data);
+                add(response.data.close * el.owned);
         })
         .catch(function (error){
             alert('Error with api call ... error=' + error);
-        });
+        }));
+        // console.log(portfolioPrices);
+        let add = (equals)=>{total=total+equals; totalRecall(total)};
+        let totalRecall= (total)=>this.setState({total: total});
+    }
+    
+    //----------------------------------
+    // Adds a listener for the resize of the window so that the graph can display the legend properly
+    //----------------------------------
+    componentWillMount() {
+        // https://goshakkk.name/different-mobile-desktop-tablet-layouts-react/
+        window.addEventListener('resize', this.handleWindowSizeChange);
     }
 
     //----------------------------------
-    // Changes the tab displayed depending on the id passed in upon clicking on the desired tab
+    // Detaches the listener for the resize of the window so that the graph can display the legend properly
     //----------------------------------    
-    changeTab = (id)=>{
-        if (id === "portfolio") {
-            this.setState({defaultTab:false});
-            document.querySelector("#details").classList.remove("is-active");
-            document.querySelector("#portfolio").classList.add("is-active");
-        }
-        else {
-            this.setState({defaultTab:true});
-            document.querySelector("#portfolio").classList.remove("is-active");
-            document.querySelector("#details").classList.add("is-active");            
-        }
+    componentWillUnmount() {
+      window.removeEventListener('resize', this.handleWindowSizeChange);
     }
     
+    //----------------------------------
+    // Attached on component mount and detached at component unmount gets the options state of the graph and modifies the position of it to display properly on the resize of the document 
+    //----------------------------------
+    handleWindowSizeChange = () => {
+      this.setState({ width: window.innerWidth });          
+      let options = this.state.options;
+      if (window.innerWidth<= 500){
+        options.legend = {position: 'top', maxLines: 4}; 
+        this.setState({options: options});
+      }else{
+        options.legend = {position: 'right'};
+        this.setState({options: options});
+      }
+    };
+
+    formatToDollars=(value)=>{
+        //https://stackoverflow.com/questions/14467433/currency-formatting-in-javascript
+        return '$' + value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    }
+        
     render(){
-        if (! this.state.company || this.state.company.length === 0){
-            return null;
-        }else{
-            /* eslint-disable react-in-jsx-scope */
-            return(
-                <article className="section">
-                {/*Bread*/}
-                    <nav className="breadcrumb" aria-label="breadcrumbs">
-                      <ul>
-                        <li><NavLink to={"/" }><span> &nbsp;&nbsp;</span>Home</NavLink></li>
-                        <li><NavLink to={"/companies" }>Companies</NavLink></li>
-                        <li className="is-active"><span >&nbsp;&nbsp;</span>{this.state.company?this.state.company.name:"loading..."}</li>
-                      </ul>
-                    </nav>
-                    <div className = "card">
-                        <header className="card-header">
-                            <p id="singleCompanyTitle" className="card-header-title is-centered">{this.state.company.name}</p>
-                        </header>
-                        <div className = "card-image">
-                            <div className="container is-small">
-                                <figure className="section">
-                                    {/* https://stackoverflow.com/questions/44154939/load-local-images-in-react-js */}
-                                    <img id="logo" src={process.env.PUBLIC_URL + '/logos/'+ this.state.symbol+ '.svg'} alt={this.state.symbol} />
-                                </figure>
-                            </div>
-                        </div>
-                        <div className = "card-content">
-                            {/* RENDER TABS AND PASS IN PROPS TO THE COMPONENTS WITHIN THE TABS */}
-                            <div className="tabs is-boxed is-fullwidth is-marginless">
-                                <ul>
-                                    <li className="is-active" id="details"><a onClick={()=>this.changeTab("details")} >Summary</a></li>
-                                    <li id="portfolio"><a onClick={()=>this.changeTab("portfolio")}>List</a></li>
-                                </ul>
-                            </div>
-                            <div className="box is-radiusless singleUserBox">
-                                {this.state.defaultTab? 
-                                    // RENDER TAB ACCORDING TO THE STATUS OF THE THIS.STATE.DEFAULTAB
-                                    // IF TRUE
-                                    <CompanySummarySub symbol={this.state.symbol} company={this.state.company}/>
-                                    // IF FALSE
-                                    :<CompanyListSub symbol={this.state.symbol} />
-                                }
+        // CHECK IF THE PIEDATA HAS BEEN POPULATED BEFORE RENDERING
+        if (!this.state.pieData) {return null;}
+            else return (
+                <div className = "columns">
+                    <div className = "column is-half">
+                        <div className = "box">
+                            <div className = "card">
+                                <header className = "card-header">
+                                    <p className = "card-header-title">
+                                        Investment Summary
+                                    </p>
+                                </header>
+                                <div className = "card-content">
+                                    <div className = "content">
+                                    {this.state.total?
+                                        <p>Total amount invested: {this.formatToDollars(this.state.total)}
+                                        </p>:null}
+                                        <p>Total number of companies owned: {this.state.owned}
+                                        </p>
+                                        <br/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </article>
-            );}
+                    <div className = "column is-half">
+                        <div className = "box">
+                        {/* Piechart */}
+                            <Chart
+                                chartType="PieChart"
+                                data={this.state.pieData}
+                                options={this.state.options}
+                                graph_id="PieChart"
+                                width="100%"
+                                height="400px"
+                                legend_toggle
+                            />
+                        </div>
+                    </div>
+                </div>
+            );
         }
     }
-export default SingleCompany;
+export default PortfolioSummarySub;
