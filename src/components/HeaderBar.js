@@ -57,8 +57,10 @@ class HeaderBar extends React.Component {
                      <span></span>
                 </a>
             </div>
+                <h1><NavLink to={'/'} className="dropdown-item" onClick={this.state.logout}> Logout</NavLink></h1>
             {/* Contracted burger menu at start */}
             <div className="navbar-menu  navbar-dropdown">
+            <NavLink to={'/'} className="dropdown-item" onClick={this.state.logout}> Logout</NavLink>
                 <div className="navbar-end">
                     {/* EACH ELEMENT IS ITERATED FROM THE OPTIONSARRAY */}
                     {this.state.optionsArray.map((option, ind)=>{
@@ -74,6 +76,7 @@ class HeaderBar extends React.Component {
                     )})}
                 </div>
             </div>
+            
             {/* Desktop menu, not visible on mobile*/}
             <div className="navbar-end is-hidden-touch" id="desktop-menu" >
             {/* SINCE THERE IS NO MSG OPTION ON LOGOUT IT RENDERS DIFFERENT FUNCTIONS ON CLICK */}

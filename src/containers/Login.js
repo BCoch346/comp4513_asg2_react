@@ -67,7 +67,13 @@ class Login extends Component {
   bypasslogin = () => {
      let setpswd =()=>{this.setState({pswd: "funwebdev" },this.login)};
       this.setState({email: "ccrigin3@nbcnews.com" },setpswd);
+      this.login();
   };
+  bypasslogin2 = () => {
+    let setpswd =()=>{this.setState({pswd: "funwebdev" },this.login)};
+     this.setState({email: "llaugheran5@upenn.edu" },setpswd);
+     this.login();
+ };
   
   //-----------------------------------------------------
   // GETS THE USER DETAILS AND SETS THEM AT ROOT LEVEL, SIGNS IN AND SAVES THE STATE OF THE USER.
@@ -194,6 +200,16 @@ class Login extends Component {
                                       <p className="control">
                                         <a className="button is-link input" onClick={()=>this.login()}>
                                           <span>Submit</span>
+                                        </a>
+                                      </p>
+                                      <p className="control">
+                                        <a className="button is-link input" onClick={()=>this.bypasslogin()}>
+                                          <span>Test User 1</span>
+                                        </a>
+                                      </p>
+                                      <p className="control">
+                                        <a className="button is-link input" onClick={()=>this.bypasslogin2()}>
+                                          <span>Test User 2</span>
                                         </a>
                                       </p>
                                 </div>
