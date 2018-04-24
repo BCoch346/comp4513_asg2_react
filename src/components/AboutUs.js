@@ -49,15 +49,10 @@ const AboutUs=()=> {
               We are students in the Bachelor of Computer Information Systems at Mount Royal University. While we are sad that this is our last Web assignment, we are also so excited cause this one was a bitch. 
               <br />
               <br />
-              <a href="https://twitter.com/hashtag/css">#css</a>
-              <a href="https://twitter.com/hashtag/responsive">#responsive</a>
-              <a href="https://twitter.com/hashtag/react">#react</a>
-              <a href="https://twitter.com/hashtag/node">#node</a>
-              <a href="https://twitter.com/hashtag/heroku">#heroku</a>
-              <a href="https://twitter.com/hashtag/bulma">#bulma</a>
-              <a href="https://twitter.com/hashtag/sass">#sass</a>
-              <a href="https://twitter.com/hashtag/googleanalytics">#googleanalytics</a>
-              <a href="https://twitter.com/hashtag/c9">#c9</a>
+              <a href="https://twitter.com/hashtag/css">React</a>
+              <a href="https://twitter.com/hashtag/responsive">Node Chat Server</a>
+              <a href="https://twitter.com/hashtag/react">Node Backend</a>
+
             </div>
           </div>
         </div>
