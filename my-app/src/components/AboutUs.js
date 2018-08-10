@@ -35,13 +35,13 @@ const AboutUs=()=> {
                   Brandon Cochrane
                 </p>
                 <p className="subtitle is-6 is-marginless">
-                  Dev OPs, chat, & notifications
+                  Dev OPs, chat, Integration & notifications
                 </p>
                 <p className="title is-4 is-marginless">
                   George Chase
                 </p>
                 <p className="subtitle is-6 is-marginless">
-                  API, CSS, grade-a bitch fixer
+                  API, CSS, Dev Support & Troubleshooting
                 </p>
               </div>
             </div>
